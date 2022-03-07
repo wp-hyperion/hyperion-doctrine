@@ -13,7 +13,7 @@ use Hyperion\Model\ClassTreeMapperPathModel;
 use Hyperion\Model\Module;
 use Hyperion\Model\Part;
 
-class HyperionDoctrinePlugin implements PluginInterface
+class HyperionDoctrinePlugin
 {
     public const ENTITY_TAG = 'entity';
 

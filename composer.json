@@ -17,7 +17,7 @@
   "require": {
     "php" : ">=8.1",
     "ext-apcu": "*",
-    "hyperion/hyperion-core":  "dev-feature/plugin",
+    "hyperion/hyperion-core":  "dev-master",
     "doctrine/orm": "^2.11"
   },
   "autoload": {
