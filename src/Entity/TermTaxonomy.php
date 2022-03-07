@@ -1,6 +1,6 @@
 <?php
 
-namespace Hyperion\Core\Entity;
+namespace Hyperion\Doctrine\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class TermTaxonomy
- * @package Hyperion\Core\Entity
+ * @package Hyperion\Doctrine\Entity
  * @ORM\Entity()
  * @ORM\Table(name="term_taxonomy")
  */

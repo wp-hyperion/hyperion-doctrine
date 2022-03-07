@@ -1,14 +1,14 @@
 <?php
 
-namespace Hyperion\Core\Entity;
+namespace Hyperion\Doctrine\Entity;
 
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
-use Hyperion\Core\MetaEntity\Author;
+use Hyperion\Doctrine\MetaEntity\Author;
 
 /**
  * Class Comment
- * @package Hyperion\Core\Entity
+ * @package Hyperion\Doctrine\Entity
  * @ORM\Entity()
  * @ORM\Table(name="comments")
  */

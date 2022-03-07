@@ -1,6 +1,6 @@
 <?php
 
-namespace Hyperion\Core\MetaEntity;
+namespace Hyperion\Doctrine\MetaEntity;
 
 class Author
 {

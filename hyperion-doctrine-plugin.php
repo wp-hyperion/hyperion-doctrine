@@ -11,8 +11,8 @@
  * @package           Hyperion
  *
  * @wordpress-plugin
- * Plugin Name:       Hyperion
- * Description:       Futurist ship running through wordpress
+ * Plugin Name:       Hyperion-Doctrine
+ * Description:       Doctrine plugin for hyperion engine
  * Version:           1.0.0
  * Author:            Grégory COLLIN
  * License:           GPL-2.0+
@@ -25,6 +25,6 @@ if ( ! defined('WPINC' ) ) {
     die;
 }
 
-register_activation_hook(__FILE__, [\Hyperion\Hyperion::class, 'poweringUp']);
-register_deactivation_hook(__FILE__, [\Hyperion\Hyperion::class, 'shuttingDown']);
-add_action( 'init', [\Hyperion\Hyperion::class, 'ignition'] );
+/*register_activation_hook(__FILE__, [\Hyperion\Doctrine\HyperionDoctrinePlugin::class, 'poweringUp']);
+register_deactivation_hook(__FILE__, [\Hyperion\Doctrine\HyperionDoctrinePlugin::class, 'shuttingDown']);*/
+add_action( 'init', [\Hyperion\Doctrine\HyperionDoctrinePlugin::class, 'ignition'] );

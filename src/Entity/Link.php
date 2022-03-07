@@ -1,13 +1,13 @@
 <?php
 
-namespace Hyperion\Core\Entity;
+namespace Hyperion\Doctrine\Entity;
 
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class Link
- * @package Hyperion\Core\Entity
+ * @package Hyperion\Doctrine\Entity
  * @ORM\Entity()
  * @ORM\Table(name="links")
  */
