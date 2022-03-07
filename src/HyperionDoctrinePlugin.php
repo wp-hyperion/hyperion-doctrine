@@ -2,12 +2,14 @@
 
 namespace Hyperion\Doctrine;
 
+use Hyperion\Core\ClassTreeMapper;
 use Hyperion\Core\MainEngine;
 use Hyperion\Doctrine\Service\DoctrineService;
 use Hyperion\Enum\PartType;
 use Hyperion\Hyperion;
 use Hyperion\Interfaces\PluginInterface;
 use Hyperion\Model\AutoloadedComponent;
+use Hyperion\Model\ClassTreeMapperPathModel;
 use Hyperion\Model\Module;
 use Hyperion\Model\Part;
 
@@ -49,6 +51,8 @@ class HyperionDoctrinePlugin implements PluginInterface
      */
     public static function addDefaultEntityNamespaces(MainEngine $engine)
     {
+        // Rajoute son namespace dans le classTreeMapper pour qu'il puisse gérer
+        ClassTreeMapper::addClassNamespace(new ClassTreeMapperPathModel(__NAMESPACE__."\\Entity", __dir__."/Entity"));
         $autoLoadedComponent = new AutoloadedComponent(
             'hyperion_default_entities',
             __NAMESPACE__."\\Entity",
@@ -57,6 +61,7 @@ class HyperionDoctrinePlugin implements PluginInterface
 
         $engine->addAutoloadedComponent($autoLoadedComponent);
 
+        ClassTreeMapper::addClassNamespace(new ClassTreeMapperPathModel(__NAMESPACE__."\\MetaEntity", __dir__."/MetaEntity"));
         $autoLoadedComponent = new AutoloadedComponent(
             'hyperion_default_metaentities',
             __NAMESPACE__."\\MetaEntity",
