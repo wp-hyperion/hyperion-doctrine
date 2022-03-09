@@ -12,7 +12,7 @@
  *
  * @wordpress-plugin
  * Plugin Name:       Hyperion-Doctrine
- * Description:       Doctrine plugin for hyperion engine
+ * Description:       Doctrine plugin for hyperion
  * Version:           1.0.0
  * Author:            Grégory COLLIN
  * License:           GPL-2.0+
@@ -25,6 +25,4 @@ if ( ! defined('WPINC' ) ) {
     die;
 }
 
-/*register_activation_hook(__FILE__, [\Hyperion\Doctrine\HyperionDoctrinePlugin::class, 'poweringUp']);
-register_deactivation_hook(__FILE__, [\Hyperion\Doctrine\HyperionDoctrinePlugin::class, 'shuttingDown']);*/
-add_action( 'init', [\Hyperion\Doctrine\HyperionDoctrinePlugin::class, 'ignition'] );
+add_action( 'init', [\Hyperion\Doctrine\HyperionDoctrinePlugin::class, 'init'] );

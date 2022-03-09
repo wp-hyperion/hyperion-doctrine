@@ -11,14 +11,14 @@
   "repositories": [
     {
       "type" : "vcs",
-      "url" : "git@github.com:wp-hyperion/hyperion-advanced.git"
+      "url" : "git@github.com:wp-hyperion/hyperion-loader.git"
     }
   ],
   "require": {
     "php" : ">=8.1",
     "ext-apcu": "*",
-    "hyperion/hyperion-core":  "dev-master",
-    "doctrine/orm": "^2.11"
+    "doctrine/orm": "^2.11",
+    "hyperion/hyperion-loader": "^0.1"
   },
   "autoload": {
     "psr-4": {
