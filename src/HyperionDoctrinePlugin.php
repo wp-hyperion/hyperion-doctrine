@@ -13,7 +13,9 @@ class HyperionDoctrinePlugin
     public static function init()
     {
         add_action(HyperionLoader::REGISTER_HYPERION_MODULE, function(RegisteredModuleCollection $registeredModuleCollection) {
-            $registeredModuleCollection->addModule(__NAMESPACE__);
+            $registeredModuleCollection->addModule(__NAMESPACE__."\Service");
+            $registeredModuleCollection->addModule(__NAMESPACE__."\Entity");
+            $registeredModuleCollection->addModule(__NAMESPACE__."\MetaEntity");
         }, 1);
 
         do_action(self::REGISTER_ADDITIONAL_ENTITY_NS, [DoctrineService::class, 'addEntityNamespace']);
