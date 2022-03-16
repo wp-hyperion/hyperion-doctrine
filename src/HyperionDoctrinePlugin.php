@@ -2,9 +2,11 @@
 
 namespace Hyperion\Doctrine;
 
+use Hyperion\Doctrine\Command\SyncEntityWithModel;
 use Hyperion\Doctrine\Service\DoctrineService;
-use Hyperion\Loader\Collection\RegisteredModuleCollection;
+use Hyperion\Loader\Collection\AutoloadedNamespaceCollection;
 use Hyperion\Loader\HyperionLoader;
+use Hyperion\Loader\Service\ContainerEngine;
 
 class HyperionDoctrinePlugin
 {
@@ -12,12 +14,18 @@ class HyperionDoctrinePlugin
 
     public static function init()
     {
-        add_action(HyperionLoader::REGISTER_HYPERION_MODULE, function(RegisteredModuleCollection $registeredModuleCollection) {
-            $registeredModuleCollection->addModule(__NAMESPACE__."\Service");
-            $registeredModuleCollection->addModule(__NAMESPACE__."\Entity");
-            $registeredModuleCollection->addModule(__NAMESPACE__."\MetaEntity");
+        add_action(HyperionLoader::REGISTER_HYPERION_MODULE, function(AutoloadedNamespaceCollection $autoloadedNamespaceCollection) {
+            $autoloadedNamespaceCollection->addAutoloadNamespace(__NAMESPACE__."\Service");
+            $autoloadedNamespaceCollection->addAutoloadNamespace(__NAMESPACE__."\Command");
         }, 1);
 
+        add_action(HyperionLoader::HYPERION_CONTAINER_READY, [__CLASS__, 'registerCliCommands'], 1);
         do_action(self::REGISTER_ADDITIONAL_ENTITY_NS, [DoctrineService::class, 'addEntityNamespace']);
+    }
+
+    private static function registerCliCommands(ContainerEngine $containerEngine)
+    {
+        $SyncEntityWithModelCmd = $containerEngine->getContainer()->get(SyncEntityWithModel::class);
+        WP_CLI::add_command(SyncEntityWithModel::COMMAND_NAME, $containerEngine->getContainer()->get(SyncEntityWithModel::class)->run());
     }
 }
