@@ -5,22 +5,22 @@ namespace Hyperion\Doctrine\Service;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Setup;
+use Hyperion\Loader\HyperionLoader;
 
 class DoctrineService
 {
-	private EntityManagerInterface $entityManager;
-	private static array $entityNamespaces;
+    private EntityManagerInterface $entityManager;
+    private static array $entityNamespaces;
 
-	public function __construct()
+    public function __construct()
     {
-        self::$entityNamespaces[] = __NAMESPACE__."\Entity";
-        self::$entityNamespaces[] = __NAMESPACE__."\MetaEntity";
+        self::$entityNamespaces = ["Hyperion\Doctrine\Entity","Hyperion\Doctrine\MetaEntity"];
         $this->buildEntityManager();
     }
 
     public static function addEntityNamespace(string $namespace)
     {
-        if(!in_array($namespace, self::$entityNamespaces, true)) {
+        if (!in_array($namespace, self::$entityNamespaces, true)) {
             self::$entityNamespaces[] = $namespace;
         }
     }
@@ -32,7 +32,25 @@ class DoctrineService
 
     private function buildEntityManager() : void
     {
-        $config = Setup::createAnnotationMetadataConfiguration(self::$entityNamespaces, true, null, null, false);
+        /** Récupération des répertoires */
+        $loader = HyperionLoader::getLoader();
+        $folders = [];
+        if (false === sort(self::$entityNamespaces, SORT_STRING)) {
+            throw new \Exception("Trie des namespaces impossible ?!");
+        }
+
+        foreach (self::$entityNamespaces as $namespace) {
+            $parentNamespace = substr($namespace, 0, strlen($namespace) - strpos(strrev($namespace), '\\'));
+            foreach ($loader->getPrefixesPsr4() as $rootNamespace => $directories) {
+                if ($parentNamespace === $rootNamespace) {
+                    foreach ($directories as $dir) {
+                        $folders[] = $dir . "/" . str_replace('\\', '/', substr($namespace, strlen($rootNamespace)));
+                    }
+                }
+            }
+        }
+
+        $config = Setup::createAnnotationMetadataConfiguration($folders, true, null, null, false);
         $this->entityManager = EntityManager::create($this->getDatabaseConfig(), $config);
         $this->entityManager->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'string');
         $config->addCustomStringFunction('STR_TO_DATE', 'DoctrineExtensions\Query\Mysql\StrToDate');

@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\ORM\Tools\SchemaValidator;
 use Hyperion\Doctrine\Service\DoctrineService;
+use WP_CLI;
 
 class SyncEntityWithModel
 {
