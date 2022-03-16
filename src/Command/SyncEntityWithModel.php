@@ -27,16 +27,19 @@ class SyncEntityWithModel
     {
         if($this->checkSchema() === false) {
             WP_CLI::error("Please fix errors described before.");
+            exit(0);
         }
 
         if($this->validator->schemaInSyncWithMetadata()) {
             WP_CLI::success("Schema in sync with your database");
+            exit(0);
         }
 
         $metadatas = $this->em->getMetadataFactory()->getAllMetadata();
         $this->schemaTool->updateSchema($metadatas, false);
 
         WP_CLI::success("Schema updated ! Base in sync with your schemas");
+        exit(0);
     }
 
     private function checkSchema() : bool
