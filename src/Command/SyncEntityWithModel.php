@@ -22,7 +22,7 @@ class SyncEntityWithModel
         $this->schemaTool = new SchemaTool($this->em);
     }
 
-    public function runCommand()
+    public function run()
     {
         if($this->checkSchema() === false) {
             WP_CLI::error("Please fix errors described before.");
