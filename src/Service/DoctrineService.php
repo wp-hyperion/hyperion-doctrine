@@ -53,16 +53,17 @@ class DoctrineService
         }
 
         $config = Setup::createAnnotationMetadataConfiguration($folders, true, null, null, false);
-        $this->entityManager = EntityManager::create($this->getDatabaseConfig(), $config);
+        $this->entityManager = EntityManager::create($this->getDatabaseConfig(), $config, $this->addEvents());
         $this->entityManager->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'string');
         $config->addCustomStringFunction('STR_TO_DATE', 'DoctrineExtensions\Query\Mysql\StrToDate');
-        $this->addEvents();
     }
 
-    private function addEvents()
+    private function addEvents() : EventManager
     {
         $evm = new EventManager();
         $evm->addEventSubscriber(new TablePrefixSubscriber());
+
+        return $evm;
     }
 
     private function getDatabaseConfig() : array
