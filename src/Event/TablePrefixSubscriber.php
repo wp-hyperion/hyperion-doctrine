@@ -29,7 +29,7 @@ class TablePrefixSubscriber implements EventSubscriber
     public function loadClassMetadata(LoadClassMetadataEventArgs $args): void
     {
         $classMetadata = $args->getClassMetadata();
-        $dbPrefix = getenv('DB_PREFIX') ?: '_wp';
+        $dbPrefix = getenv('DB_PREFIX') ?: 'wp_';
 
         if (!str_starts_with($classMetadata->getTableName(), $dbPrefix)) {
             $tableName = $dbPrefix . strtolower($classMetadata->getTableName());
