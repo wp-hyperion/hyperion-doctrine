@@ -2,9 +2,11 @@
 
 namespace Hyperion\Doctrine\Service;
 
+use Doctrine\Common\EventManager;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Setup;
+use Hyperion\Doctrine\Event\TablePrefixSubscriber;
 use Hyperion\Loader\HyperionLoader;
 
 class DoctrineService
@@ -54,6 +56,13 @@ class DoctrineService
         $this->entityManager = EntityManager::create($this->getDatabaseConfig(), $config);
         $this->entityManager->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'string');
         $config->addCustomStringFunction('STR_TO_DATE', 'DoctrineExtensions\Query\Mysql\StrToDate');
+        $this->addEvents();
+    }
+
+    private function addEvents()
+    {
+        $evm = new EventManager();
+        $evm->addEventSubscriber(new TablePrefixSubscriber());
     }
 
     private function getDatabaseConfig() : array
