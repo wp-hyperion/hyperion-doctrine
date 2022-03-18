@@ -3,10 +3,12 @@
 namespace Hyperion\Doctrine\Service;
 
 use Doctrine\Common\EventManager;
+use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Setup;
 use Hyperion\Doctrine\Event\TablePrefixSubscriber;
+use Hyperion\Doctrine\Type\EmptyStringNullable;
 use Hyperion\Loader\HyperionLoader;
 
 class DoctrineService
@@ -54,8 +56,9 @@ class DoctrineService
 
         $config = Setup::createAnnotationMetadataConfiguration($folders, true, null, null, false);
         $this->entityManager = EntityManager::create($this->getDatabaseConfig(), $config, $this->addEvents());
+        Type::addType('strnullable', EmptyStringNullable::class);
         $this->entityManager->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'string');
-        $this->entityManager->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('string', 'strnullable');
+        $this->entityManager->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('strnullable', 'strnullable');
         $config->addCustomStringFunction('STR_TO_DATE', 'DoctrineExtensions\Query\Mysql\StrToDate');
     }
 

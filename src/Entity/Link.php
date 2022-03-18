@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Class Link
  * @package Hyperion\Doctrine\Entity
  * @ORM\Entity()
- * @ORM\Table(name="links",indexes={@Index(name="link_visible_idx", columns={"visible"})})
+ * @ORM\Table(name="links",indexes={@ORM\Index(name="link_visible_idx", columns={"visible"})})
  */
 class Link
 {
