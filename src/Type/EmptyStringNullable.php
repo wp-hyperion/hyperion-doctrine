@@ -9,7 +9,7 @@ class EmptyStringNullable extends Type
 {
     public function getSQLDeclaration(array $column, AbstractPlatform $platform)
     {
-        return 'string';
+        return 'VARCHAR(255)';
     }
 
     public function getName()
