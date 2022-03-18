@@ -55,6 +55,7 @@ class DoctrineService
         $config = Setup::createAnnotationMetadataConfiguration($folders, true, null, null, false);
         $this->entityManager = EntityManager::create($this->getDatabaseConfig(), $config, $this->addEvents());
         $this->entityManager->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'string');
+        $this->entityManager->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('string', 'strnullable');
         $config->addCustomStringFunction('STR_TO_DATE', 'DoctrineExtensions\Query\Mysql\StrToDate');
     }
 
