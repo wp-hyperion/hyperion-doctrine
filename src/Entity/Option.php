@@ -15,7 +15,7 @@ class Option
 {
     /**
      * @ORM\Id()
-     * @ORM\Column(name="option_id", type="integer")
+     * @ORM\Column(name="option_id", type="integer", options={"unsigned": true})
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private int $id;
@@ -26,14 +26,14 @@ class Option
     private string $name;
 
     /**
-     * @ORM\Column(type="string", name="option_value")
+     * @ORM\Column(type="string", name="option_value", nullable=true)
      */
-    private string $value;
+    private ?string $value = null;
 
     /**
-     * @ORM\Column(type="string", name="autoload")
+     * @ORM\Column(type="boolean", name="autoload", options={"default": true})
      */
-    private string $autoload;
+    private bool $autoload = true;
 
     /**
      * @return int

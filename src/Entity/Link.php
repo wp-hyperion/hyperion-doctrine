@@ -9,13 +9,13 @@ use Doctrine\ORM\Mapping as ORM;
  * Class Link
  * @package Hyperion\Doctrine\Entity
  * @ORM\Entity()
- * @ORM\Table(name="links")
+ * @ORM\Table(name="links",indexes={@Index(name="link_visible_idx", columns={"visible"})})
  */
 class Link
 {
     /**
      * @ORM\Id()
-     * @ORM\Column(type="integer", name="link_id")
+     * @ORM\Column(type="integer", name="link_id", options={"unsigned" : true})
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private int $id;
@@ -26,29 +26,29 @@ class Link
     private string $url;
 
     /**
-     * @ORM\Column(type="string", name="link_name")
+     * @ORM\Column(type="string", name="link_name", nullable=true)
      */
-    private string $name;
+    private ?string $name = null;
 
     /**
-     * @ORM\Column(type="string", name="link_image")
+     * @ORM\Column(type="string", name="link_image", nullable=true)
      */
-    private string $image;
+    private ?string $image = null;
 
     /**
-     * @ORM\Column(type="string", name="link_target")
+     * @ORM\Column(type="string", name="link_target", nullable=true)
      */
-    private string $target;
+    private ?string $target = null;
 
     /**
-     * @ORM\Column(type="string", name="link_description")
+     * @ORM\Column(type="string", name="link_description", nullable=true)
      */
-    private string $description;
+    private ?string $description = null;
 
     /**
-     * @ORM\Column(type="string", name="link_visible")
+     * @ORM\Column(type="boolean", name="link_visible", options={"default": true})
      */
-    private string $visible;
+    private bool $visible = true;
 
     /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="links")
@@ -57,261 +57,152 @@ class Link
     private User $owner;
 
     /**
-     * @ORM\Column(type="integer", name="link_rating")
+     * @ORM\Column(type="integer", name="link_rating", nullable=true)
      */
-    private int $rating;
+    private ?int $rating = null;
 
     /**
-     * @ORM\Column(type="datetime", name="link_updated")
+     * @ORM\Column(type="datetime", name="link_updated", nullable=true)
      */
-    private DateTime $updated;
+    private ?DateTime $updated = null;
 
     /**
-     * @ORM\Column(type="string", name="link_rel")
+     * @ORM\Column(type="string", name="link_rel", nullable=true)
      */
-    private string $rel;
+    private ?string $rel = null;
 
     /**
-     * @ORM\Column(type="string", name="link_notes")
+     * @ORM\Column(type="string", name="link_notes", nullable=true)
      */
-    private string $notes;
+    private ?string $notes = null;
 
     /**
-     * @ORM\Column(type="string", name="link_rss")
+     * @ORM\Column(type="string", name="link_rss", nullable=true)
      */
-    private string $rss;
+    private ?string $rss = null;
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @param int $id
-     * @return Link
-     */
-    public function setId(int $id): Link
-    {
-        $this->id = $id;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
     public function getUrl(): string
     {
         return $this->url;
     }
 
-    /**
-     * @param string $url
-     * @return Link
-     */
-    public function setUrl(string $url): Link
+    public function setUrl(string $url): void
     {
         $this->url = $url;
-        return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     * @return Link
-     */
-    public function setName(string $name): Link
+    public function setName(?string $name): void
     {
         $this->name = $name;
-        return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getImage(): string
+    public function getImage(): ?string
     {
         return $this->image;
     }
 
-    /**
-     * @param string $image
-     * @return Link
-     */
-    public function setImage(string $image): Link
+    public function setImage(?string $image): void
     {
         $this->image = $image;
-        return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getTarget(): string
+    public function getTarget(): ?string
     {
         return $this->target;
     }
 
-    /**
-     * @param string $target
-     * @return Link
-     */
-    public function setTarget(string $target): Link
+    public function setTarget(?string $target): void
     {
         $this->target = $target;
-        return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getDescription(): string
+    public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    /**
-     * @param string $description
-     * @return Link
-     */
-    public function setDescription(string $description): Link
+    public function setDescription(?string $description): void
     {
         $this->description = $description;
-        return $this;
     }
 
-    /**
-     * @return bool
-     */
     public function isVisible(): bool
     {
-        return $this->visible === 'Y';
+        return $this->visible;
     }
 
-    /**
-     * @param bool $visible
-     * @return Link
-     */
-    public function setVisible(bool $visible): Link
+    public function setVisible(bool $visible): void
     {
-        $this->visible = $visible ? 'Y' : 'N';
-        return $this;
+        $this->visible = $visible;
     }
 
-    /**
-     * @return User
-     */
     public function getOwner(): User
     {
         return $this->owner;
     }
 
-    /**
-     * @param User $owner
-     * @return Link
-     */
-    public function setOwner(User $owner): Link
+    public function setOwner(User $owner): void
     {
         $this->owner = $owner;
-        return $this;
     }
 
-    /**
-     * @return int
-     */
-    public function getRating(): int
+    public function getRating(): ?int
     {
         return $this->rating;
     }
 
-    /**
-     * @param int $rating
-     * @return Link
-     */
-    public function setRating(int $rating): Link
+    public function setRating(?int $rating): void
     {
         $this->rating = $rating;
-        return $this;
     }
 
-    /**
-     * @return DateTime
-     */
-    public function getUpdated(): DateTime
+    public function getUpdated(): ?DateTime
     {
         return $this->updated;
     }
 
-    /**
-     * @param DateTime $updated
-     * @return Link
-     */
-    public function setUpdated(DateTime $updated): Link
+    public function setUpdated(?DateTime $updated): void
     {
         $this->updated = $updated;
-        return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getRel(): string
+    public function getRel(): ?string
     {
         return $this->rel;
     }
 
-    /**
-     * @param string $rel
-     * @return Link
-     */
-    public function setRel(string $rel): Link
+    public function setRel(?string $rel): void
     {
         $this->rel = $rel;
-        return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getNotes(): string
+    public function getNotes(): ?string
     {
         return $this->notes;
     }
 
-    /**
-     * @param string $notes
-     * @return Link
-     */
-    public function setNotes(string $notes): Link
+    public function setNotes(?string $notes): void
     {
         $this->notes = $notes;
-        return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getRss(): string
+    public function getRss(): ?string
     {
         return $this->rss;
     }
 
-    /**
-     * @param string $rss
-     * @return Link
-     */
-    public function setRss(string $rss): Link
+    public function setRss(?string $rss): void
     {
         $this->rss = $rss;
-        return $this;
     }
 }

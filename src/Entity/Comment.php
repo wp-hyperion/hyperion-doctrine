@@ -3,6 +3,8 @@
 namespace Hyperion\Doctrine\Entity;
 
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Hyperion\Doctrine\MetaEntity\Author;
 
@@ -16,7 +18,7 @@ class Comment
 {
     /**
      * @ORM\Id()
-     * @ORM\Column(type="integer", name="comment_ID")
+     * @ORM\Column(type="bigint", name="comment_ID", options={"unsigned": true})
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private int $id;
@@ -33,27 +35,28 @@ class Comment
     private string $author;
 
     /**
-     * @ORM\Column(type="string", name="comment_author_email")
+     * @ORM\Column(type="strnullable", name="comment_author_email", nullable=true)
      */
-    private string $authorEmail;
+    private ?string $authorEmail = null;
 
     /**
-     * @ORM\Column(type="string", name="comment_author_url")
+     * @ORM\Column(type="string", name="comment_author_url", options={"default": ""})
      */
-    private string $authorUrl;
+    private ?string $authorUrl = null;
 
     /**
-     * @ORM\Column(type="string", name="comment_author_IP")
+     * @ORM\Column(type="string", name="comment_author_IP", length=39, nullable=true)
+     * 39 caractères car on prend en charge l'ipv6
      */
-    private string $authorIp;
+    private ?string $authorIp = null;
 
     /**
-     * @ORM\Column(type="datetime", name="comment_date")
+     * @ORM\Column(type="datetime", name="comment_date", options={"default": "CURRENT_TIMESTAMP"})
      */
     private DateTime $date;
 
     /**
-     * @ORM\Column(type="datetime", name="comment_date_gmt")
+     * @ORM\Column(type="datetime", name="comment_date_gmt", options={"default": "CURRENT_TIMESTAMP"})
      */
     private DateTime $dateGMT;
 
@@ -63,37 +66,36 @@ class Comment
     private string $content;
 
     /**
-     * @ORM\Column(type="integer", name="comment_karma")
+     * @ORM\Column(type="integer", name="comment_karma", options={"default": 0})
      */
-    private int $karma;
+    private int $karma = 0;
 
     /**
-     * @ORM\Column(type="boolean", name="comment_approved")
+     * @ORM\Column(type="boolean", name="comment_approved", options={"default": 0})
      */
     private bool $approved;
 
     /**
-     * @ORM\Column(type="string", name="comment_agent")
+     * @ORM\Column(type="string", name="comment_agent", nullable=true)
      */
-    private string $agent;
+    private ?string $agent = null;
 
     /**
-     * @ORM\Column(type="string", name="comment_type")
+     * @ORM\Column(type="string", name="comment_type", options={"default": "comment"})
      */
-    private string $type;
+    private string $type = "comment";
 
     /**
      * @ORM\OneToMany(targetEntity="Comment", mappedBy="childs")
-     * @ORM\JoinColumn(name="comment_parent", referencedColumnName="comment_ID")
+     * @ORM\JoinColumn(name="comment_parent", referencedColumnName="comment_ID", nullable=true)
      */
     private ?Comment $parent = null;
 
     /**
-     * @var Comment[]
      * @ORM\ManyToOne(targetEntity="Comment", inversedBy="parent")
      * @ORM\JoinColumn(referencedColumnName="comment_ID")
      */
-    private array $childs;
+    private Collection $childs;
 
     /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="comments")
@@ -102,15 +104,14 @@ class Comment
     private User $user;
 
     /**
-     * @var CommentMeta[]
      * @ORM\OneToMany(targetEntity="CommentMeta", mappedBy="comment")
      */
-    private array $metas;
+    private Collection $metas;
 
     public function __construct()
     {
-        $this->childs = [];
-        $this->metas = [];
+        $this->childs = new ArrayCollection();
+        $this->metas = new ArrayCollection();
     }
 
     /**
@@ -255,18 +256,18 @@ class Comment
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getAgent(): string
+    public function getAgent(): ?string
     {
         return $this->agent;
     }
 
     /**
-     * @param string $agent
+     * @param string|null $agent
      * @return Comment
      */
-    public function setAgent(string $agent): Comment
+    public function setAgent(?string $agent): Comment
     {
         $this->agent = $agent;
         return $this;
@@ -309,27 +310,17 @@ class Comment
     }
 
     /**
-     * @return Comment[]
+     * @return ArrayCollection|Comment[]
      */
-    public function getChilds(): array
+    public function getChilds(): ArrayCollection
     {
         return $this->childs;
     }
 
     /**
-     * @param Comment[] $childs
-     * @return Comment
+     * @return User|null
      */
-    public function setChilds(array $childs): Comment
-    {
-        $this->childs = $childs;
-        return $this;
-    }
-
-    /**
-     * @return User
-     */
-    public function getUser(): User
+    public function getUser(): ?User
     {
         return $this->user;
     }
@@ -345,9 +336,9 @@ class Comment
     }
 
     /**
-     * @return CommentMeta[]
+     * @return Collection|CommentMeta[]
      */
-    public function getMetas(): array
+    public function getMetas(): ArrayCollection
     {
         return $this->metas;
     }
@@ -356,9 +347,12 @@ class Comment
      * @param CommentMeta[] $metas
      * @return Comment
      */
-    public function setMetas(array $metas): Comment
+    public function addCommentMeta(CommentMeta $commentMeta): Comment
     {
-        $this->metas = $metas;
+        if(!$this->metas->contains($commentMeta)) {
+            $this->metas->add($commentMeta);
+        }
+
         return $this;
     }
 }
